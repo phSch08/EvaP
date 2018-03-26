@@ -13,14 +13,18 @@ from evap.evaluation.models import Semester, Contribution, Course, EmailTemplate
 from evap.grades.models import GradeDocument, SemesterGradeDownloadActivation
 from evap.grades.forms import GradeDocumentForm
 from evap.evaluation.tools import send_publish_notifications
+from evap.grades.tools import are_grades_activated
 
 from evap.staff.views import semester_view as staff_semester_view
 
 
 @grade_publisher_required
 def index(request):
+    semesters = list(Semester.objects.all())
+    semesters = [semester for semester in semesters if are_grades_activated(semester)]
+
     template_data = dict(
-        semesters=Semester.objects.all()
+        semesters=semesters
     )
 
     return render(request, "grades_index.html", template_data)
