@@ -22,6 +22,7 @@ def index(request):
     template_data = dict(
         semesters=Semester.objects.all()
     )
+
     return render(request, "grades_index.html", template_data)
 
 
